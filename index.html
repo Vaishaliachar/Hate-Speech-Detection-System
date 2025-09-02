@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+<style>
+     body{
+        background-image: url('https://media.istockphoto.com/id/1169630303/photo/blue-textured-background.webp?b=1&s=170667a&w=0&k=20&c=tI2xFhXqXFqMM0IvxSYY3F7LIwv450h2ch3yD-lZ9HU=');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+    }
+    
+    </style>
+<body>
+    <h3 style="color:rgb(249, 59, 59);">Hate Speech Detection System </h3>
+<div class="row">
+    <div class="col-4" style="text-align: right;">
+        <form action="/" method="post">
+            <div class="form-group">
+                <input autocomplete="off" autofocus class="form-control" name="post" placeholder="What's on your mind?" type="text">
+                &nbsp;<input type="submit" name="submit" value="Post">
+            </div>
+        </form>
+    </div>
+    <div class="col-4" style="text-align: right;">
+        <form action="/detect" method="post">
+            <div class="form-group">
+                <input autocomplete="off" autofocus class="form-control" name="file" type="file">
+                <br><br><input type="submit" name="submit" value="Post">
+            </div>
+        </form>
+    </div>
+    <div class="col-4" style="text-align: left; color: rgb(17, 22, 165);">
+        {% if reputation %}
+        <a href="" class="btn btn-info">Reputation Score: {{ reputation }}</a>
+        {% endif %}
+    </div>
+    <!-- <div class="col-4" style="text-align: left; color: rgb(17, 22, 165);">
+        <form action="/image" method="post"  enctype="multipart/form-data">
+            <input type="file" name="file" id="file" class="form-control" required>
+            <br>
+            <br><input type="submit" class="btn btn-success">
+        </form>
+    </div> -->
+</div>
+
+{% if posts is defined %}
+<br /><hr><br />
+    {% for post in posts %}
+    <div class="card border-dark mb-3 text-center" >
+        <div class="card-body text-dark">
+            <div class="row">
+                <div class="col-4" style="text-align: right;">
+                        <img src="{{ posts_metadata[post['publisher']] }}" style="max-width:25%; max-height:auto" alt="Display Picture"><br />
+                        <strong>{{  post["publisher"] }}</strong>
+                </div>
+                <div class="col-6" style="text-align: left;">
+                    <h5 class="card-title">{{ post["text"] }}</h5>
+                    <p class="card-text"><em>{{ post["nature"] }}</em></p>
+                    <p class="card-text"><em>{{ post["timestamp"] }}</em></p>
+                </div>
+            </div>
+            <i onclick="myFunction(this)" class="fa fa-thumbs-up"></i>
+        </div>
+    </div>
+    <br />
+    {% endfor %}
+{% endif %}
+<script>
+    function myFunction(x) {
+        x.classList.toggle("fa-thumbs-down");
+    }
+</script>
+<script>
+    if('{{msg}}'){
+        alert('{{msg}}')
+    }
+</script>
+</body>
+{% endblock %}
